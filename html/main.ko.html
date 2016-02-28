@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -46,9 +49,10 @@
                     <p data-bind="text: artist" class="artist"> by Artist 1</p>
                   </td>
               </div>
+              <!--<div id="counting">0</div>!-->
                   <td class="vote-cell col-sm-2">
-                  	<p data-bind="text: vote" class="num-votes"> 0</p>      <!--data-bind here for displaying votes-->
-               		<button class="vote"> Vote</button>
+                  	<p data-bind="text: vote" class="num-votes" id="counting"> 0</p>      <!--data-bind here for displaying votes-->
+               		<button class="vote" id="btn" data-bind="click: function(data, event) { add(data, event, $index()); }">Vote</button>
                   </td>
               
               </tr>            
@@ -74,11 +78,53 @@
 	$('.reset').click(function() {
 	    x.set(0);
 	});*/
+
+
+var x = new Firebase('https://partycounter.firebaseio.com/');
+
+x.on('value', function f(s) {
+x.transaction(function(current_value) {
+    $('#counting').text(current_value[0].counter);})
+});
+
+/*
+$('#btn').click(function() {
+  x.transaction(function(current_value) {
+  console.log(current_value[0]);
+  
+    if(!current_value) {
+      current_value=[
+      {counter:0},
+      {counter:0},
+      {counter:0},
+      {counter:0},
+      {counter:0}
+      ];
+    } 
+    current_value[0].counter++;
+    return current_value;
+  });
+});
+*/
 function Song(name, artist) {
+
     this.name = name;
     this.artist = artist;
     this.vote = ko.observable(0);
     this.isBeingPlayed = false;
+
+    this.add = function(data, event, index) {
+      console.log(index);
+/*
+      x.transaction(function(current_value) {
+  console.log(current_value[0]);
+
+  
+    current_value[index].counter++;
+    return current_value[index];
+  });
+*/
+   }; 
 }
 
 function SongsViewModel() {
