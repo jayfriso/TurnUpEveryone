@@ -34,24 +34,24 @@
 
       <div class="song-queue-row table-responsive row">
           <table class="song-queue-table table">
-            <tbody >
+            <tbody data-bind="foreach: playlist">         <!--data-bind here for iteration through the arraylist-->
               <tr class="song-row">
 
-              <div class="song-info col-sm-9">
+              <div class="song-info col-sm-10">
                   <td class="queue-number"> 
                     <h1> 1 </h1> 
                   </td>
                   <td class="song-info">
-                    <h1 class = "song-title"> BLABLA</h1>
-                    <p class="artist"> by BLABLABAL</p>
+                    <h1 data-bind="text: name" class = "song-title"> Song 1</h1>
+                    <p data-bind="text: artist" class="artist"> by Artist 1</p>
                   </td>
+              </div>
                   <td class="vote-cell col-sm-2">
-                  	<p class="num-votes"> 0</p>
+                  	<p data-bind="text: vote" class="num-votes"> 0</p>      <!--data-bind here for displaying votes-->
                		<button class="vote"> Vote</button>
                   </td>
-               </div>
               
-              </tr>
+              </tr>            
 
             </tbody>
           </table>
@@ -59,7 +59,7 @@
 
 
   <script type="text/javascript">
-    var x = new Firebase('https://countingex.firebaseio-demo.com/');
+/*    var x = new Firebase('https://countingex.firebaseio-demo.com/');
 
 	x.on('value', function f(s) {
 	    $('.num-votes').text(0 + s.val());
@@ -73,7 +73,28 @@
 
 	$('.reset').click(function() {
 	    x.set(0);
-	});
+	});*/
+function Song(name, artist) {
+    this.name = name;
+    this.artist = artist;
+    this.vote = ko.observable(0);
+    this.isBeingPlayed = false;
+}
+
+function SongsViewModel() {
+    var self = this;
+  
+    // Editable data
+    self.playlist = ko.observableArray([
+        new Song("Song 1", "Artist 1"),
+        new Song("Song 2", "Artist 2"),
+        new Song("Song 3", "Artist 3"),
+        new Song("Song 4", "Artist 4"),
+        new Song("Song 5", "Artist 5"),
+    ]);
+}
+
+ko.applyBindings(new SongsViewModel());
 
   </script>
 
