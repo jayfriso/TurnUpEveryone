@@ -1,0 +1,9 @@
+{
+  "firebase": "getturnedup",
+  "public": "turnUp",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
